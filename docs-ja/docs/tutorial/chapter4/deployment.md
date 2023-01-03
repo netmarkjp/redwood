@@ -211,21 +211,24 @@ Now just authorize Netlify to connect to your git hosting provider and find your
 Netlify があなたの git ホスティングプロバイダに接続し、あなたのリポジトリを見つけることを承認してください。デプロイ設定が表示されたら、すべてデフォルトのまま、 **Deploy site** をクリックします。
 
 <!--
-Netlify will start building your app and it will eventually say "Site is live", but nothing will work. Why? We haven't told it where to find our database yet!
+Netlify will start building your app and it will eventually say the deployment failed. Why? We haven't told it where to find our database yet!
 -->
 
-Netlify がアプリのビルドを開始し、最終的に "Site is live" と表示されますが、何も動作しません。なぜでしょうか？まだデータベースがどこにあるか教えていないからです！
+Netlify がアプリのビルドを開始し、最終的にデプロイに失敗します。なぜでしょうか？まだデータベースがどこにあるか教えていないからです！
 
 #### Environment Variables
 
 <!--
 Go back to the main site page and then to **Site settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Railway (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgresql://<user>:<pass>@<url>/<db>?connection_limit=1`.
+Go back to the main site page and then to **Site settings** at the top, and then **Environment variables**. Click **Add a Variable** and this is where we'll paste the database connection URI we got from Railway (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgresql://<user>:<pass>@<url>/<db>?connection_limit=1`. The default values for Scopes and Values can be left as is. Click **Create variable** to proceed.
 -->
 
-メインサイトページに戻り、上部の **Site settings** から **Build & Deploy** > **Environment** に進みます。
-**Edit Variables** をクリックし、ここに Railway から取得したデータベース接続URIを貼り付けます（ **Key** は "DATABASE_URL" です）。
+メインサイトページに戻り、上部の **Site settings** から **Environment Variables** に進みます。
+**Add a Variable** をクリックし、ここに Railway から取得したデータベース接続URIを貼り付けます（ **Key** は "DATABASE_URL" です）。
 値を貼り付けたら、末尾に `?connection_limit=1` を追加してください。
 URIはこののような形式になります： `postgresql://<user>:<pass>@<url>/<db>?connection_limit=1`
+ScopesとValuesはデフォルト値のままでOKです。
+**Create variable** をクリックして次に進みます。
 
 :::tip
 
@@ -248,7 +251,7 @@ Copy that over to Netlify along with `DATABASE_URL`:
 
 それを `DATABASE_URL` と一緒に Netlify にコピーします：
 
-![Adding ENV var](https://user-images.githubusercontent.com/300/154520225-76dfa960-1d09-4544-92a4-2c7e58dc4e3f.png)
+![Adding ENV var](https://user-images.githubusercontent.com/2931245/204148740-f8aaa276-e9b1-4ffc-a842-7602a1e0111a.png)
 
 <!--
 Make sure to click the **Save** button.
