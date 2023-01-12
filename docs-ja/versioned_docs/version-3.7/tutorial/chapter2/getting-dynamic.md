@@ -39,7 +39,7 @@ We need to decide what data we'll need for a blog post. We'll expand on this at 
 We use [Prisma](https://www.prisma.io/) to talk to the database. Prisma has another library called [Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) that lets us update the database's schema in a predictable way and snapshot each of those changes. Each change is called a _migration_ and Migrate will create one when we make changes to our schema.
 -->
 
-データベースとの通信には[Prisma](https://www.prisma.io/)を使用します。Prismaには[Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate)という別のライブラリがあり、予測可能な方法でデータベースのスキーマを更新し、それぞれの変更のスナップショットを作成できるようになっています。それぞれの変更は _migration_ と呼ばれ、スキーマを変更するとMigrateは _migration_ を作成します。
+データベースとの通信には[Prisma](https://www.prisma.io/)を使用します。Prismaには[Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate)という別のライブラリがあり、予測可能な方法でデータベースのスキーマを更新し、それぞれの変更のスナップショットを作成できるようになっています。それぞれの変更は _migration_ （マイグレーション）と呼ばれ、スキーマを変更するとMigrateはマイグレーションを作成します。
 
 <!--
 First let's define the data structure for a post in the database. Open up `api/db/schema.prisma` and add the definition of our Post table (remove any "sample" models that are present in the file, like the `UserExample` model). Once you're done, the entire schema file should look like:
@@ -112,7 +112,7 @@ IDフィールドについて詳しくは[official Prisma documentation](https:/
 Now we'll want to snapshot the schema changes as a migration:
 -->
 
-それではスキーマの変更をmigrationとして切り取ってみましょう：
+それではスキーマの変更をマイグレーションとして切り取ってみましょう：
 
 ```bash
 yarn rw prisma migrate dev
@@ -145,7 +145,7 @@ After the command completes you'll see a new subdirectory created under `api/db/
 In addition to creating the migration file, the above command will also execute the SQL against the database, which "applies" the migration. The final result is a new database table called `Post` with the fields we defined above.
 -->
 
-migrationファイルの作成に加えて、上記のコマンドはデータベースに対してSQLを実行し、migrationを "適用" します。最終結果は、ここで定義したフィールドを持つ `Post` という名前の新しいデータベーステーブルです。
+マイグレーションファイルの作成に加えて、上記のコマンドはデータベースに対してSQLを実行し、マイグレーションを "適用" します。最終結果は、ここで定義したフィールドを持つ `Post` という名前の新しいデータベーステーブルです。
 
 ### Prisma Studio
 
@@ -263,7 +263,7 @@ If you head back to VSCode at some point and get a notice in one of the generate
 2. Reload the GraphQL engine in VSCode: open the Command Palette (Cmd+Shift+P for Mac, Ctrl+Shift+P for Windows) and find "VSCode GraphQL: Manual Restart"
 -->
 
-もし、VSCodeに戻ったときに、生成されたPostのセルに `Cannot query "posts" on type "Query"` というメッセージが表示されたとしても、心配しないでください：これは、いくつかのシステムで時々見受けられます。2つの簡単な修正方法があります：
+もし、VSCodeに戻ったときに、生成されたPostのセル（ `web/src/components/Post/PostCell/PostCell.tsx` ）に `Cannot query "posts" on type "Query"` というメッセージが表示されたとしても、心配しないでください：これは、いくつかのシステムで時々見受けられます。2つの簡単な修正方法があります：
 
 1. ターミナルで `yarn rw g types` を実行する
 2. VSCodeのGraphQLエンジンをリロードする：コマンドパレットを開き（MacはCmd+Shift+P、WindowsはCtrl+Shift+P）、 "VSCode GraphQL: Manual Restart" を見つける
@@ -295,24 +295,24 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
 
 以下が `yarn rw g scaffold post` コマンドを実行したら起きることです：
 
-- `web/src/pages/Post` にいくつかの _pages_ を作成する：
+- `web/src/pages/Post` にいくつかのページを作成する：
   - `EditPostPage` ブログ記事を編集する
   - `NewPostPage` 新しいブログ記事を作成する
   - `PostPage` ブログ記事を表示する
   - `PostsPage` すべてのブログ記事を一覧表示する
-- `web/src/layouts/ScaffoldLayout/ScaffoldLayout.{js,tsx}` に _layout_ ファイルを作成する。これらはページの見出しや "New Posts" ボタンなどの共通要素を持つページのコンテナとして機能する
+- `web/src/layouts/ScaffoldLayout/ScaffoldLayout.{js,tsx}` にレイアウトファイルを作成する。これらはページの見出しや "New Posts" ボタンなどの共通要素を持つページのコンテナとして機能する
 - `web/src/Routes.{js,tsx}` に、これらのページのレイアウトを `PostsLayout` として、`Set` コンポーネントでラップしたルートを作成する
-- `web/src/components/Post` に、3つの _cells_ を作成する
+- `web/src/components/Post` に、3つのセルを作成する
   - `EditPostCell` データベースで編集するブログ記事を取得する
   - `PostCell` 表示するブログ記事を取得する
   - `PostsCell` すべてのブログ記事を取得する
-- `web/src/components/Post` に、4つの _components_ を作成する
+- `web/src/components/Post` に、4つのコンポーネントを作成する
   - `NewPost` 新しいブログ記事を作成するためのフォームを表示する
   - `Post` 一つのブログ記事を表示する
   - `PostForm` NewとEditのコンポーネントで使用される実際のフォーム
   - `Posts` すべてのブログ記事の一覧表を表示する
 -  `api/src/graphql/posts.sdl.{js,ts}` にGraphQL のクエリとミューテーションを定義する _SDL_ ファイルを追加する
-- `api/src/services/posts/posts.{js,ts}` にデータベースからデータを取得するためのPrismaクライアントコールを行う _services_ ファイルを追加する
+- `api/src/services/posts/posts.{js,ts}` にデータベースからデータを取得するためのPrismaクライアントコールを行うサービスファイルを追加する
 
 <!--
 Pages and components/cells are nicely contained in `Post` directories to keep them organized while the layout is at the top level since there's only one of them.
@@ -349,7 +349,7 @@ As far as the generators are concerned:
 ジェネレータに関する限り：
 
 - サービスのファイル名は常に複数形
-- サービスのメソッドは、複数のブログ記事を返すのか単一のブログ記事を返すのか ( `posts` と `createPost` の違い) によって単数形か複数形か
+- サービスのメソッドは、複数のブログ記事を返すのか単一のブログ記事を返すのか ( `posts` と `createPost` の違い) によって複数形か単数形か
 - SDL のファイル名は複数形
 - scaffolds に付属するページは、複数のブログ記事を扱うか、1つのブログ記事を扱うかによって複数形か単数形になる。 `page` ジェネレータを使用する場合、コマンドラインで指定された名前を使用する
 - レイアウトはコマンドラインで指定された名前を使用する
@@ -360,7 +360,7 @@ As far as the generators are concerned:
 Also note that it's the model name part that's singular or plural, not the whole word. So it's `PostsCell` and `PostsPage`, not `PostCells` or `PostPages`.
 -->
 
-また、単数形か複数形かはモデル名の部分であって、単語全体ではないことに注意してください。つまり、 `PostCell` や `PostPage` であって、`PostCells` や `PostPages` ではありません。
+また、単数形か複数形かはモデル名の部分であって、単語全体ではないことに注意してください。つまり、 `PostsCell` や `PostsPage` であって、`PostCells` や `PostPages` ではありません。
 
 <!--
 You don't have to follow this convention once you start creating your own parts but we recommend doing so. The Ruby on Rails community has come to love this nomenclature even though many people complained when first exposed to it!

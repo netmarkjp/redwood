@@ -119,7 +119,7 @@ Redwoodには2つの認証方法があります：
 In both cases you end up with an authenticated user that you can access in both the web and api sides of your app.
 -->
 
-どちらの場合も、最終的にはWebサイドとapiサイドの両方でアクセスできる認証済みユーザを得ることができます。
+どちらの場合も、最終的にはWebサイドとAPIサイドの両方でアクセスできる認証済みユーザを得ることができます。
 
 <!--
 Redwood includes [integrations](../../authentication.md) for several of the most popular third-party auth providers:
@@ -488,15 +488,27 @@ export const schema = gql`
 </TabItem>
 </Tabs>
 
+<!--
 Reload the homepage and:
+-->
+
+ホームページを再読み込みすると：
 
 ![image](https://user-images.githubusercontent.com/300/146463788-7ab8afbb-8cd8-4c16-b8d2-02a00bcd7b46.png)
 
+<!--
 They're back! Let's just check that if we click on one of our posts that we can see it...UGH:
+-->
+
+戻ってきました！一応それぞれのブログ記事が見られるかもチェックしてみましょう...ぐぬぬ：
 
 ![image](https://user-images.githubusercontent.com/300/146463841-cb9c95b6-3cc8-4697-9056-97fdebb49c51.png)
 
+<!--
 This page shows a single post, using the `post` query, not `posts`! So, we need to `@skipAuth` on that one as well:
+-->
+
+このページでは単一のブログ記事を表示するのに `posts` ではなく `post` クエリを使っています！そのためこちらにも `@skipAuth` が必要です：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -585,7 +597,7 @@ Cross your fingers and reload!
 We're back in business! Once you add authentication into your app you'll probably run into several situations like this where you need to go back and forth, re-allowing access to some pages or queries that inadvertently got locked down by default. Remember, Redwood is secure by default—we'd rather you accidentally expose too *little* of your app than too *much*!
 -->
 
-やったね！アプリに認証を追加すると、このように、デフォルトでロックされているページやクエリへのアクセスを再許可しなければならない状況に何度か遭遇するでしょう。Redwoodはデフォルトでセキュアであることを忘れないでください - アプリの意図しない公開は *多い* より *少ない* ほうがいいでしょう！
+やったね！アプリに認証を追加すると、このように、デフォルトでロックされているページやクエリへのアクセスを再許可しなければならない状況に何度か遭遇するでしょう。Redwoodはデフォルトでセキュアであることを忘れないでください -- アプリの意図しない公開は *多い* より *少ない* ほうがいいでしょう！
 
 <!--
 Now that our pages are behind login, let's actually create a login page so that we can see them again.

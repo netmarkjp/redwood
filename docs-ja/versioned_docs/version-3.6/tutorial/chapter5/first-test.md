@@ -102,7 +102,7 @@ Let's compromise—by virtue of the fact that this functionality has a prop call
 
 1. ブログ記事の本文の全文が *存在しない*
 2. しかし、少なくともブログ記事の最初の数単語は存在する
-3. 表示されるテキストが　"..." で終わっている
+3. 表示されるテキストが "..." で終わっている
 
 <!--
 This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text *would* be present, and we should probably update the `truncate()` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)

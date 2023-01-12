@@ -4,7 +4,7 @@
 Now that we have our homepage listing all the posts, let's build the "detail" page—a canonical URL that displays a single post. First we'll generate the page and route:
 -->
 
-すべての投稿を表示するホームページができたので "deatil（詳細）" ページ、つまり単一のブログ記事を表示する正規の URL を作成しましょう。まず、ページとルートを生成します：
+すべての投稿を表示するホームページができたので "deatil" （詳細）ページ -- つまり単一のブログ記事を表示する正規の URL を作成しましょう。まず、ページとルートを生成します：
 
 ```bash
 yarn rw g page Article

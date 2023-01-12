@@ -457,4 +457,4 @@ Everything we've done so far has been on the web side, which is all in the brows
 
 進捗しました！重複していた部分をすべて削除し、ヘッダコンテンツ（ロゴとナビゲーション）を一カ所にまとめました。
 
-ここまでの作業はすべてwebサイド、つまりブラウザ上でのことです。それでは、バックエンドに着手して、GraphQL、Prisma、データベースをやっていきましょう。
+ここまでの作業はすべてWebサイド、つまりブラウザ上でのことです。それでは、バックエンドに着手して、GraphQL、Prisma、データベースをやっていきましょう。

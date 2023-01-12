@@ -49,7 +49,7 @@ Those `.stories.{js,tsx}` files are what makes the tree on the left side of the 
 *"...an open source tool for developing UI components in isolation for React, Vue, Angular, and more. It makes building stunning UIs organized and efficient."*
 -->
 
-*"... React、Vue、AngularなどのUIコンポーネントを分離して開発するためのオープンソースツールです。魅力的なUIの開発を整理され効率よく実現します。"*
+*"... React、Vue、AngularなどのUIコンポーネントを分離して開発するためのオープンソースツールです。魅力的なUIの開発を整った形で効率よく実現します。"*
 
 <!--
 So, the idea here is that you can build out your components/cells/pages in isolation, get them looking the way you want and displaying the correct data, then plug them into your full application.

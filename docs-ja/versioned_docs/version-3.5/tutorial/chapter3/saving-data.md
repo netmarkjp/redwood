@@ -97,7 +97,7 @@ If you remember our discussion in [how Redwood works with data](../chapter2/side
 Open up `api/src/graphql/contacts.sdl.{js,ts}` and you'll see the same Query and Mutation types defined for Contact that were created for the Post scaffold. `Contact`, `CreateContactInput` and `UpdateContactInput` types, as well as a `Query` type with `contacts` and `contact`, and a `Mutation` type with `createContact`, `updateContact` and `deleteContact`.
 -->
 
-`api/src/graphql/contacts.sdl.{js,ts}` を開くと、Post scaffold で作成したのと同じ Query と Mutation 型が Contact 用に定義されているのがわかります。 `Contact` 、 `CreateContactInput` 、 `UpdateContactInput` 型、そして `contacts` と `contact` を含む `Query` 型、さらに `createContact` 、 `updateContact` 、 `deleteContact` を含む `Mutation` 型が定義されています。
+`api/src/graphql/contacts.sdl.{js,ts}` を開くと、Post scaffold で作成したのと同じ Query 型と Mutation 型が Contact 用に定義されているのがわかります。 `Contact` 、 `CreateContactInput` 、 `UpdateContactInput` 、そして `contacts` と `contact` を含む `Query` 型、さらに `createContact` 、 `updateContact` 、 `deleteContact` を含む `Mutation` 型が定義されています。
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -182,13 +182,13 @@ export const schema = gql`
 The `@requireAuth` string you see after the `Query` and `Mutation` types is a [schema directive](https://www.graphql-tools.com/docs/schema-directives) which says that in order to access this GraphQL query the user is required to be authenticated. We haven't added authentication yet, so this won't have any effect—anyone will be able to query it, logged in or not, because until you add authentication the function behind `@requireAuth` always returns `true`.
 -->
 
-`Query` と `Mutation` 型の後にある `@requireAuth` の文字列は [schema directive](https://www.graphql-tools.com/docs/schema-directives) で、この GraphQL クエリにアクセスするにはユーザ認証が必要であることを示しています。認証を追加するまでは `@requireAuth` （の背後で動作する関数）は常に `true` を返すので、ログインしていようがいまいが、誰でもクエリを実行することができます。
+`Query` 型と `Mutation` 型の後にある `@requireAuth` の文字列は [schema directive](https://www.graphql-tools.com/docs/schema-directives) で、この GraphQL クエリにアクセスするにはユーザ認証が必要であることを示しています。認証を追加するまでは `@requireAuth` （の背後で動作する関数）は常に `true` を返すので、ログインしていようがいまいが、誰でもクエリを実行することができます。
 
 <!--
 What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explicitly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input type was a good compromise for optimal developer experience.
 -->
 
-`CreateContactInput` と `UpdateContactInput` とは何でしょうか？Redwood はミューテーションにおいて設定可能なフィールドを一つ一つ列挙するのではなく、GraphQL が推奨する [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) を使います。 `schema.prisma` で必要なフィールドは `CreateContactInput` でも必要ですが （それがないと有効なレコードを作成できません）、 `UpdateContactInput` では必須のフィールドはありません。これは、1つのフィールドのみ、または2つのフィールド、あるいはすべてのフィールドを更新したい場合があるからです。別の方法は、更新したいフィールドの組み合わせごとに、別々の Input 型を作成することです。私たちは、更新用の入力タイプを1つだけ持つことが、開発者のエクスペリエンスを最適化するための良い妥協点だと考えています。
+`CreateContactInput` と `UpdateContactInput` とは何でしょうか？Redwood はミューテーションにおいて設定可能なフィールドを一つ一つ列挙するのではなく、GraphQL が推奨する [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) を使います。 `schema.prisma` で必要なフィールドは `CreateContactInput` でも必要ですが （それがないと有効なレコードを作成できません）、 `UpdateContactInput` では必須のフィールドはありません。これは、1つのフィールドのみ、または2つのフィールド、あるいはすべてのフィールドを更新したい場合があるからです。別の方法は、更新したいフィールドの組み合わせごとに、別々の Input 型を作成することです。私たちは、更新用の Input 型を1つだけ持つことが、開発者のエクスペリエンスを最適化するための良い妥協点だと考えています。
 
 :::info
 
@@ -220,7 +220,7 @@ GraphQL の SDL 構文では、フィールドが必須で _ある_ 場合、末
 As described in [Side Quest: How Redwood Deals with Data](../chapter2/side-quest.md), there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention: each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.{js,ts}`) maps to a function with the same name in the `services` file (`api/src/services/contacts/contacts.{js,ts}`).
 -->
 
-[Side Quest: How Redwood Deals with Data](../chapter2/side-quest.md) で説明したように、SDL ファイルには明示的なリゾルバが定義されていません。Redwood はシンプルな命名規則に従っています： `sdl` ファイル（ `api/src/graphql/contacts.sdl.{js,ts}` ）の `Query` と `Mutation` 型にリストされている各フィールドは、`services` ファイル（ `api/src/services/contacts/contacts.{js,ts}` ）の同じ名前を持つ関数と対応づけられています。
+[Side Quest: How Redwood Deals with Data](../chapter2/side-quest.md) で説明したように、SDL ファイルには明示的なリゾルバが定義されていません。Redwood はシンプルな命名規則に従っています： `sdl` ファイル（ `api/src/graphql/contacts.sdl.{js,ts}` ）の `Query` 型と `Mutation` 型にリストされている各フィールドは、`services` ファイル（ `api/src/services/contacts/contacts.{js,ts}` ）の同じ名前を持つ関数と対応づけられています。
 
 :::tip
 
@@ -236,7 +236,7 @@ As described in [Side Quest: How Redwood Deals with Data](../chapter2/side-quest
 You'd only get a single `contacts` type to return them all.
 -->
 
-それらをすべて返すには、1つの `contacts` 型しか生成されません。
+すべてを返す `contacts` 型しか生成されません。
 
 :::
 
@@ -253,7 +253,7 @@ We'll only need `createContact` for our contact page. It accepts a single variab
 Serendipitously, the default schema directive of `@requireAuth` is exactly what we want for the `contacts` query that returns ALL contacts—only we, the owners of the blog, should have access to read them all.
 -->
 
-偶然にも、デフォルトのスキーマディレクティブである `@requireAuth` は、まさにすべてのお問い合わせを返す `contacts` クエリに必要なもので --- 私たちブログのオーナーだけがそれらをすべて読むことができるアクセス権を持っているはずです。
+偶然にも、デフォルトのスキーマディレクティブである `@requireAuth` は、まさにすべてのお問い合わせを返す `contacts` クエリに必要なもので -- 私たちブログのオーナーだけがそれらをすべて読むことができるアクセス権を持っているはずです。
 
 :::
 
@@ -860,7 +860,7 @@ quick reminder：開発サーバを起動していれば（あるいは `yarn rw
 Once you define the `CreateContactMutation` (the GraphQL one), Redwood will generate the `CreateContactMutation` and `CreateContactMutationVariables` types from it for you.
 -->
 
-一旦 `CreateContactMutation` （GraphQL のもの）を定義すると、Redwood はそこから `CreateContactMutation` と `CreateContactMutationVariables` 型を生成してくれます。
+一旦 `CreateContactMutation` （GraphQL のもの）を定義すると、Redwood はそこから `CreateContactMutation` 型と `CreateContactMutationVariables` 型を生成してくれます。
 
 <!--
 Take a look at our [Generated Types](typescript/generated-types.md) docs for a deeper dive!
@@ -1837,7 +1837,7 @@ This just scratches the surface of what Service Validations can do. You can perf
 
 これは、Service Validationsでできることのほんの一部です。1度の呼び出しで複数のディレクティブを組み合わせるなど、より複雑なバリデーションを実行することができます。もし "車" を表すモデルがあり、ユーザが私たちの独占的な車のショッピングサイトにそれらを送信することができるとしたらどうでしょう？どのようにすれば、よりすぐりの電気自動車だけを入手できるでしょうか？サービスバリデーションを使えば、カスタムチェックをせずに、組み込みの `validate()` 呼び出しだけで、ユーザが送信できる値について非常に細かく指定することができるようになります：
 
-<Tabs>
+<Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
 
 ```js
