@@ -782,7 +782,7 @@ Now fill out the comment form and submit! And...nothing happened! Believe it or 
 Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages (before we reloaded the page) which isn't ideal. But, we can fix both of those. One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely when a new comment is submitted.
 -->
 
-やったー！コメントを送信すると同時に表示されればもっと良かったので、5合目って感じでしょうか？また、テキストボックスが私たちの名前とメッセージで満たされたまま（ページを再読み込みする前の）であることは、理想的ではありません。でも、どちらも修正できます。一つはGraphQLクライアント（Apollo）に新しいレコードを作成したことを伝え、もしよろしければ、このページのコメントを取得するクエリをもう一度試してもらうことです。もう一つは、新しいコメントが送信されたときに、ページからフォームを完全に削除します。
+やったー！コメントを送信すると同時に表示されればもっと良かったので、5合目って感じでしょうか？しかし、テキストボックスに私たちの名前とメッセージが入力されたまま（ページを再読み込みする前の状態）なのは、理想的ではありません。でも、どちらも修正できます。一つはGraphQLクライアント（Apollo）に新しいレコードを作成したことを伝え、できれば、このページのコメントを取得するクエリをもう一度試してもらうことです。もう一つは、新しいコメントが送信されたときに、ページからフォームを完全に削除します。
 
 ### GraphQL Query Caching
 

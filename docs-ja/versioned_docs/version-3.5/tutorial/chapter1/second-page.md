@@ -122,7 +122,7 @@ Let's point out a few things here:
   If you don't like the name or path that `redwood generate` created for your route, feel free to change it in `Routes.{js,tsx}`! Named routes are awesome because if you ever change the path associated with a route (like going from `/about` to `/about-us`), you need only change it in `Routes.{js,tsx}` and every link using a named route function (`routes.about()`) will still point to the correct place! You can also pass a string to the `to` prop (`to="/about"`), but now if your path ever changed you would need to find and replace every instance of `/about` to `/about-us`.
 -->
 
-- Redwoodは [Function Components](https://www.robinwieruch.de/react-function-component) が大好き。React Hooks](https://reactjs.org/docs/hooks-intro.html)を多用していくが、これは関数コンポーネントでのみ有効。クラスコンポーネントを使うのは自由だが、特別な機能が必要でない限りは避けることを推奨する
+- Redwoodは [Function Components](https://www.robinwieruch.de/react-function-component) が大好き。 [React Hooks](https://reactjs.org/docs/hooks-intro.html)を多用していくが、これは関数コンポーネントでのみ有効。クラスコンポーネントを使うのは自由だが、特別な機能が必要でない限りは避けることを推奨する
 - Redwood の `<Link>` タグは、最も基本的な使い方として、1つの `to` 属性を取る。この `to` 属性は正しいURLを生成するために [_named route function_](../../router.md#link-and-named-route-functions) を呼び出す。この関数は `<Route>` の `name` 属性と同じ名前を持つ：
 
   `<Route path="/about" page={AboutPage} name="about" />`

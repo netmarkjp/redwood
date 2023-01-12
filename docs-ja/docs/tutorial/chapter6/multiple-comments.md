@@ -64,7 +64,7 @@ Look, we gotta end this sidebar and get back to building this thing. You can ask
 Let's generate a **CommentsCell**:
 -->
 
-**CommentCell** を生成しましょう：
+**CommentsCell** を生成しましょう：
 
 ```bash
 yarn rw g cell Comments
@@ -883,4 +883,4 @@ The summary version of `Article` does *not* render the `CommentsCell`, but we sh
 Okay we're finally ready to let users create their comments.
 -->
 
-さて、いよいよユーザ自身ががコメントする準備が整いました。
+さて、いよいよユーザ自身がコメントする準備が整いました。

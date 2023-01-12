@@ -11,13 +11,13 @@ You made it! Get yourself some ice cream or a slice of pie: you definitely deser
 Will there be a chapters 8+ of the tutorial? We've spent a lot of time getting our features working but not much time with optimization and polish. [Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization), but once your site is live and you've got real users on it you'll get a sense of what could be faster, prettier or more efficient. That's when time spent optimizing can pay huge dividends. But, discovering the techniques and best practices for those optimizations...that's a whole different story. The kind of story that Redwood loves to help you write!
 -->
 
-チュートリアルのチャプター8以上はあるのでしょうか？私たちは、機能を動作させることに多くの時間を費やしてきましたが、最適化や改良にはあまり時間をかけてきませんでした。[Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization) （早すぎる最適化は諸悪の根源）ですが、一度サイトが稼動し、実際のユーザに使ってもらえば、より速く、より美しく、より効率的にできることが分かってくるはずです。このときこそ、最適化にかける時間が大きな利益を生むのです。しかし、その最適化のためのテクニックやベストプラクティスを発見するのは...また全く別の話です。Redwoodは、そのようなストーリーを描くお手伝いをします！
+チュートリアルのChapter 8以降はあるのでしょうか？私たちは、機能を動作させることに多くの時間を費やしてきましたが、最適化や改良にはあまり時間をかけてきませんでした。[Premature optimization is the root of all evil](http://wiki.c2.com/?PrematureOptimization) （早すぎる最適化は諸悪の根源）ですが、一度サイトが稼動し、実際のユーザに使ってもらえば、より速く、より美しく、より効率的にできることが分かってくるはずです。このときこそ、最適化にかける時間が大きな利益を生むのです。しかし、その最適化のためのテクニックやベストプラクティスを発見するのは...また全く別の話です。Redwoodは、そのようなストーリーを描くお手伝いをします！
 
 <!--
 So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 -->
 
-それでは次回まで、開発者の宿敵である imposter syndrome （詐欺師症候群）に対抗するための知恵を紹介します：
+それでは次回まで、開発者の宿敵である imposter syndrome （インポスター症候群、詐欺師症候群）に対抗するための知恵を紹介します：
 
 > _"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self."_ — Ernest Hemingway
 >
@@ -29,7 +29,7 @@ So until next time, a bit of wisdom to help combat that next bout of every devel
 Want to add some more features to your app? Check out some of our how to's like [calling to a third party API](../how-to/using-a-third-party-api.md) and [deploying an app without an API at all](../how-to/disable-api-database.md). We've also got lots of [guides](https://redwoodjs.com/docs/index) for more info on Redwood's internals.
 -->
 
-あなたのアプリにもっと機能を追加したいですか？[calling to a third party API](../how-to/using-a-third-party-api.md) （サードパーティAPIの呼び出し）や [deploying an app without an API at all](../how-to/disable-api-database.md) （APIのないアプリのデプロイ）などのHow Toをチェックしてみてください。また、Redwood の内部に関する詳細な情報については、多くの [guide](https://redwoodjs.com/docs/index) を用意しています。
+あなたのアプリにもっと機能を追加したいですか？[calling to a third party API](../how-to/using-a-third-party-api.md) （サードパーティAPIの呼び出し）や [deploying an app without an API at all](../how-to/disable-api-database.md) （APIのないアプリのデプロイ）などのHow Toをチェックしてみてください。また、Redwood の内部に関する詳細な情報については、多くの [ガイド](https://redwoodjs.com/docs/index) を用意しています。
 
 ## Roadmap
 

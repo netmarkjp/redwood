@@ -4,7 +4,7 @@
 The features we listed at the end of the last page (loading state, error messaging, blank slate text) are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](../../cells.md).)
 -->
 
-前のページの最後に挙げた機能（ロード状態、エラーメッセージ、空白のテキスト）は、ほとんどのWebアプリで一般的なものです。私たちは、典型的なコンポーネントにこれらの機能を追加する際に、開発者の生活を楽にするために何ができるか考えました。私たちは、そのための方法を編み出しました。これを _Cells_ と呼んでいます。セルはデータ取得のための、よりシンプルで宣言的なアプローチを提供します（[セルに関する完全なドキュメントを読む](../../cells.md)）。
+前のページの最後に挙げた機能（ロード状態、エラーメッセージ、空白のテキスト）は、ほとんどのWebアプリで一般的なものです。私たちは、典型的なコンポーネントにこれらの機能を追加する際に、開発者の生活を楽にするために何ができるか考えました。私たちは、そのための方法を編み出しました。これを _Cells_ （セル）と呼んでいます。セルはデータ取得のための、よりシンプルで宣言的なアプローチを提供します（[セルに関する完全なドキュメントを読む](../../cells.md)）。
 
 <!--
 In addition to these states, cells are also responsible for their own data fetching. This means that rather than fetching data in some parent component and then passing props down to the child components that need them, a cell is completely self-contained and fetches and displays its own data! Let's add one to our blog to get a feel for how they work.
@@ -141,7 +141,7 @@ Also notice the `FindPosts` type imported from `types/graphql`. This and other t
 -->
 
 また `types/graphql` からインポートされた `FindPosts` 型にも注目してください。
-この型やその他の型は、開発サーバが動作している間、CellのGraphQLクエリに基づいて自動的に生成されます。生成された型の詳細は[こちら](typescript/generated-types.md)を参照してください。
+この型やその他の型は、開発サーバが動作している間、セルのGraphQLクエリに基づいて自動的に生成されます。生成された型の詳細は[こちら](typescript/generated-types.md)を参照してください。
 
 :::
 
@@ -161,7 +161,7 @@ Usually in a blog the homepage will display a list of recent posts. This list is
 We do, but you will generally want to use a *cell* when you need data from the database. A best practice for Redwood is to create a Page for each unique URL your app has, but that you fetch and display data in Cells. So the existing HomePage will render this new cell as a child.
 -->
 
-データベースからデータが必要な場合、一般的に *cell* を使用したいと思うでしょう。Redwoodのベストプラクティスは、アプリが持つ固有のURLごとにページを作成し、セルでデータを取得して表示することです。そのため、既存の HomePage はこの新しいセルを子ページとしてレンダリングします。
+データベースからデータが必要な場合、一般的に *セル* を使いたいと思うでしょう。Redwoodのベストプラクティスは、アプリが持つ固有のURLごとにページを作成し、セルでデータを取得して表示することです。そのため、既存の HomePage はこの新しいセルを子ページとしてレンダリングします。
 
 :::
 
@@ -255,7 +255,7 @@ export const Success = ({ articles }: CellSuccessProps<ArticlesQuery>) => {
 When generating a cell you can use any case you'd like and Redwood will do the right thing when it comes to naming. These will all create the same filename (`web/src/components/BlogArticlesCell/BlogArticlesCell.{js,tsx}`):
 -->
 
-セルを生成するときには、大文字小文字いずれも使うことができ、Redwoodは命名するときに正しいことをします。これらはすべて同じファイル名（ `web/src/components/BlogArticlesCell/BlogArticlesCell.{js,tsx}` ）で作成されます：
+セルを生成するときには、大文字小文字いずれも使うことができ、Redwoodは命名するときにこれを正します。これらはすべて同じファイル名（ `web/src/components/BlogArticlesCell/BlogArticlesCell.{js,tsx}` ）で作成されます：
 
 ```bash
 yarn rw g cell blog_articles
@@ -274,7 +274,7 @@ You will need _some_ kind of indication that you're using more than one word: ei
 Calling `yarn redwood g cell blogarticles` (without any indication that we're using two words) will generate a file at `web/src/components/BlogarticlesCell/BlogarticlesCell.{js,tsx}`.
 -->
 
-`yarn redwood g cell blogarticles` を実行すると、（2つの単語を使っていることを示すことなく） `web/src/components/BlogarticlesCell/BlogarticlesCell.{js,tsx}` にファイルが生成されます。
+（2つの単語を使っていることを示さずに） `yarn redwood g cell blogarticles` を実行すると、 `web/src/components/BlogarticlesCell/BlogarticlesCell.{js,tsx}` にファイルが生成されます。
 
 :::
 

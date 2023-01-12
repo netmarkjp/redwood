@@ -36,7 +36,7 @@ We'll need a database somewhere on the internet to store our data. We've been us
 Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch to Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](../../local-postgres-setup.md) guide to get you started.
 -->
 
-Prismaは一度に1つのデータベースプロバイダしかサポートしておらず、実稼働環境ではSQLiteを使用できずPostgresまたはMySQLに切り替える *なければならない* ため、この変更を行った後はローカルの開発環境でも同じようにデータベースを変更する必要があります。 [ローカル Postgres セットアップ](../../local-postgres-setup.md) ガイドを参照し、開始してください。
+Prismaは一度に1つのデータベースプロバイダしかサポートしておらず、実稼働環境ではSQLiteを使用できずPostgresまたはMySQLに切り替え *なければならない* ため、この変更を行った後はローカルの開発環境でも同じようにデータベースを変更する必要があります。 [ローカル Postgres セットアップ](../../local-postgres-setup.md) ガイドを参照し、開始してください。
 
 :::
 
@@ -55,7 +55,7 @@ Postgresのインスタンスをすぐに立ち上げることができるホス
 We're going to go with Railway for now because it's a) free and b) ridiculously easy to get started, by far the easiest we've found. You don't even need to create a login! The only limitation is that if you *don't* create an account, your database will be removed after one day. If you think you can finish everything you need to do in the next 24 hours, go for it! Otherwise just create an account first and it'll stick around.
 -->
 
-ここでは Railway を使います。それは a) 無料で、 b) 超簡単に始められるからで、私達がしる限り一番簡単です。ログインすら不要です！唯一の制限は、アカウントを作成 *しない* 場合、データベースは1日後に削除されることです。もし、24時間以内にやるべきことをすべて終わらせられると思うのであれば、ぜひやってみてください！そうでなければ、まずアカウントを作成してください。
+ここでは Railway を使います。それは a) 無料で、 b) 超簡単に始められるからで、私達が知る限り一番簡単です。ログインすら不要です！唯一の制限は、アカウントを作成 *しない* 場合、データベースは1日後に削除されることです。もし、24時間以内にやるべきことをすべて終わらせられると思うのであれば、ぜひやってみてください！そうでなければ、まずアカウントを作成してください。
 
 <!--
 Head over to Railway and click **Start a New Project**:
@@ -175,7 +175,7 @@ And with that, we're ready to setup Netlify itself.
 これで、 Netlify 自体のセットアップが完了しました。
 
 :::caution
-<!-->
+<!--
 While you may be tempted to use the [Netlify CLI](https://cli.netlify.com) commands to [build](https://cli.netlify.com/commands/build) and [deploy](https://cli.netlify.com/commands/deploy) your project directly from you local project directory, doing so **will lead to errors when deploying and/or when running functions**. I.e. errors in the function needed for the GraphQL server, but also other serverless functions.
 -->
 
@@ -186,7 +186,7 @@ The main reason for this is that these Netlify CLI commands simply build and dep
 -->
 
 その主な理由は、これらの Netlify CLI コマンドは単にビルドとデプロイを行うだけだからです -- ローカルでプロジェクトをビルドし、distフォルダをプッシュします。
-どういうことかというと、RedwoodJSのプロジェクトをビルドする際、[Prismaクライアントはビルド時のOSにマッチしたバイナリで生成される](https://cli.netlify.com/commands/link) のです -- それはNetlify上で関数を動作させる [OS互換性](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#binarytargets-options) わけではないのです。Prismaクライアントのエンジンは、OSXなら `darwin` 、Windowsなら `windows` になりますが、 `debian-openssl-1.1.x` または `rhel-openssl-1.1.x` でなければならないのです。クライアントが非互換の場合、関数実行は失敗します。
+どういうことかというと、RedwoodJSのプロジェクトをビルドする際、[Prismaクライアントはビルド時のOSにマッチしたバイナリで生成される](https://cli.netlify.com/commands/link) のです -- それはNetlify上で関数を動作させるための [OS互換性](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#binarytargets-options) があるわけではないのです。Prismaクライアントのエンジンは、OSXなら `darwin` 、Windowsなら `windows` になりますが、 `debian-openssl-1.1.x` または `rhel-openssl-1.1.x` でなければならないのです。クライアントが非互換の場合、関数実行は失敗します。
 
 <!--
 Therefore, **please follow the instructions below** to sync your GitHub (or other compatible source control service) repository with Netlify and allow their build and deploy system to manage deployments.
@@ -225,11 +225,16 @@ Go back to the main site page and then to **Site settings** at the top, and then
 メインサイトページに戻り、上部の **Site settings** から **Build & Deploy** > **Environment** に進みます。
 **Edit Variables** をクリックし、ここに Railway から取得したデータベース接続URIを貼り付けます（ **Key** は "DATABASE_URL" です）。
 値を貼り付けたら、末尾に `?connection_limit=1` を追加してください。
-URIはこののような形式になります： `postgresql://<user>:<pass>@<url>/<db>?connection_limit=1`
+URIはこのような形式になります： `postgresql://<user>:<pass>@<url>/<db>?connection_limit=1`
 
 :::tip
 
+<!--
 This connection limit setting is [recommended by Prisma](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management#recommended-connection-pool-size-1) when working with relational databases in a Serverless context.
+-->
+
+この接続数制限設定は、サーバレス環境でリレーショナルデータベースを利用する際に [Prismaが推奨している](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management#recommended-connection-pool-size-1) ものです。
+
 :::
 
 <!--
@@ -334,7 +339,7 @@ Branch Deploys を有効にするには、**Site settings** > **Build & deploy**
 You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
 -->
 
-また `main` ブランチを "lock" することで、プッシュのたびに自動的にデプロイされないようにすることもできます -- Netlifyのサイトか [Netlify CLI](https://cli.netlify.com/) から、手動で最新版をデプロイしなければなりません。
+また `main` ブランチを "lock" することで、プッシュのたびに自動的にデプロイされないようにすることもできます -- この場合はNetlifyのサイトか [Netlify CLI](https://cli.netlify.com/) から、手動で最新版をデプロイしなければなりません。
 
 :::
 

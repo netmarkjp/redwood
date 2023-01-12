@@ -29,7 +29,7 @@ We already have a form or two in our app; remember our posts scaffold? And those
 
 私たちのアプリには、すでに1つ2つのフォームがあります。ブログ記事のscaffoldを覚えていますか？
 そして、それらはかなりうまく機能しています！大変でしたか？
-（願わくば、そのコードをこっそり見ていないでください-もし見ていなければ、次に来るものはもっと印象深く感じられるでしょう）。
+（願わくば、そのコードをこっそり見ていないでください -- もし見ていなければ、次に来るものはもっと印象深く感じられるでしょう）。
 
 <!--
 Let's build the simplest form that still makes sense for our blog, a "Contact Us" form.
@@ -1374,7 +1374,7 @@ This is definitely not the end-all-be-all for email address validation, but for 
 Let's also change the message on the email validation to be a little more friendly:
 -->
 
-`pattern` を指定し、emailフィールドが実際にメールアドレスを含んでいることを確認したいことでしょう。これが完璧なメールアドレスのバリデーションだとは到底言えませんが、今のところは弾丸のようなものだいうことにしておきましょう。それではメールアドレスの検証のメッセージをもう少しフレンドリーなものに変えてみましょう：
+`pattern` を指定し、emailフィールドが実際にメールアドレスを含んでいることを確認したいことでしょう。これが完璧なメールアドレスのバリデーションだとは到底言えませんが、今のところは弾除けのようなものだということにしておきましょう。それではメールアドレスの検証のメッセージをもう少しフレンドリーなものに変えてみましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -1478,4 +1478,4 @@ Redwoodにはもう一つ、フォームに関するトリックがあります�
 Having a contact form is great, but only if you actually get the contact somehow. Let's create a database table to hold the submitted data and create our first GraphQL mutation.
 -->
 
-お問い合わせフォームを持つことは素晴らしいことですが、実際に何らかの形でお問い合わせを受ける場合に限ります。送信されたデータを保持するデータベーステーブルを作成し、最初のGraphQLミューテーションを作成しましょう。
+お問い合わせフォームを持つことは素晴らしいことですが、それは実際に何らかの形でお問い合わせを受ける場合だけです。送信されたデータを保持するデータベーステーブルを作成し、最初のGraphQLミューテーションを作成しましょう。
