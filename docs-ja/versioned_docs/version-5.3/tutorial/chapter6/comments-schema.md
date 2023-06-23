@@ -1,18 +1,38 @@
 # Adding Comments to the Schema
 
+<!--
 Let's take a moment to appreciate how amazing this is—we built, designed and tested a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Redwood let us provide fake data to Storybook and Jest so we could get our component working.
+-->
 
+これがどれほどすごいことなのか、じっくりと味わってみましょう -- 私たちはアプリの新しいコンポーネントを構築、デザイン、テストしました。実際にはバックエンドの機能を何も構築していないのに、このコンポーネントはデータをAPIコール（データベースからデータを取得する）で取得するコンポーネントです！RedwoodがStorybookとJestに偽のデータを提供したので、私たちはコンポーネントを動作させることができました。
+
+<!--
 Unfortunately, even with all of this flexibility there's still no such thing as a free lunch. Eventually we're going to have to actually do that backend work. Now's the time.
+-->
 
+残念ながら、これだけ柔軟性があっても、タダ飯はないのです。最終的には、バックエンドの仕事をやらなければならないのです。今がその時です。
+
+<!--
 If you went through the first part of the tutorial you should be somewhat familiar with this flow:
 
 1. Add a model to `schema.prisma`
 2. Run a `yarn rw prisma migrate dev` commands to create a migration and apply it to the database
 3. Generate an SDL and service
+-->
+
+チュートリアルの最初の部分をご覧になった方は、この流れにある程度慣れているはずです：
+
+1. モデルを `schema.prisma` に追加
+2. `yarn rw prisma migrate dev` コマンドを実行してマイグレーションを作成し、データベースに適用
+3. SDLとサービスを生成
 
 ### Adding the Comment model
 
+<!--
 Let's do that now:
+-->
+
+それではやってみましょう：
 
 ```javascript title="api/db/schema.prisma"
 datasource db {
@@ -64,12 +84,23 @@ model Comment {
 // highlight-end
 ```
 
+<!--
 Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries to denote this relationship:
 
 * `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
 * `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
+-->
 
+これらの行のほとんどは、いままで見てきたものと非常によく似ていますが、これは2つのモデル間の [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) の最初の例です。 `Comment` はこのリレーションを表すために2つのエントリを取得します：
+
+* `post` は `Post` という型を持ち、特別な `@relation` キーワードは Prisma に `Comment` と `Post` をどのように関連付けるかを伝える。この場合、 `postId` フィールドは `Post` の `id` フィールドを参照する
+* `postId` は通常の `Int` 型のカラムで、このコメントが参照している `Post` の `id` を含んでいる
+
+<!--
 This gives us a classic database model:
+-->
+
+これでクラシックなデータベースモデルができました：
 
 ```
 ┌───────────┐       ┌───────────┐
@@ -83,13 +114,21 @@ This gives us a classic database model:
                     └───────────┘
 ```
 
+<!--
 Note that there is no real database column named `post` in `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
+-->
+
+実際のデータベースには `Comment` に `post` という名前のカラムが存在しないことに注意してください -- これは Prisma ための特別な構文で、Prismaがモデルの相互接続方法を認識し、その接続を参照できるようにします。Prisma を使用して `Comment` を検索すると、その名前を使用して、アタッチされた `Post` にアクセスすることができます：
 
 ```javascript
 db.comment.findUnique({ where: { id: 1 }}).post()
 ```
 
+<!--
 Prisma also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
+-->
+
+Prismaはまた、便利な `comments` フィールドを `Post` に追加し、同じ機能を逆に使えるようにしました：
 
 ```javascript
 db.post.findUnique({ where: { id: 1 }}).comments()
@@ -97,31 +136,55 @@ db.post.findUnique({ where: { id: 1 }}).comments()
 
 ### Running the Migration
 
+<!--
 This one is easy enough: we'll create a new migration with a name and then run it:
+-->
+
+これは簡単です：名前を付けて新しいマイグレーションを作成し、それを実行します：
 
 ```bash
 yarn rw prisma migrate dev
 ```
 
+<!--
 When prompted, give this one a name something like "create comment".
+-->
+
+プロンプトが表示されたら、 "create comment" のような名前をつけます。
 
 :::tip
 
+<!--
 You'll need to restart the test suite runner at this point if it's still running. You can do a Ctrl-C or just press `q`. Redwood creates a second, test database for you to run your tests against (it is at `.redwood/test.db` by default). The database migrations are run against that test database whenever the test suite is *started*, not while it's running, so you'll need to restart it to test against the new database structure.
+-->
+
+いまテストスイートランナーが起動中の場合は、再起動する必要があります。Ctrl-C を押すか、 `q` を押すだけです。Redwood はテストを実行するために、2つ目のテストデータベースを作成します（デフォルトでは `.redwood/test.db` にあります）。データベースのマイグレーションは、テストスイートを実行中ではなく、テストスイートを *開始* したときに実行されるので、新しいデータベース構造に対してテストを行うにはテストスイートを再起動する必要があります。
 
 :::
 
 ### Creating the SDL and Service
 
+<!--
 Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database) with a generator call:
+-->
+
+次に、SDL （GraphQL インターフェースを定義するもの）とサービス（データベースからレコードを取得するもの）をジェネレータで生成します：
 
 ```bash
 yarn rw g sdl Comment --no-crud
 ```
 
+<!--
 Note the `--no-crud` flag here. This gives us bare-bones functionality to start with (read-only access to our model) that we can build on. We got all the CRUD endpoints for free when we created the Post section of our site, so let's do the opposite here and see how to add functionality from scratch.
+-->
 
+ここで `--no-crud` フラグに注目してください。このフラグによって、私たちが構築できる基本的な機能（モデルへの読み取り専用アクセス）から始めることができます。サイトのPostセクションを作成したときに、すべてのCRUDエンドポイントをタダで手に入れたので、ここではその逆を行い、イチから機能を追加する方法を見てみましょう。
+
+<!--
 That command will create both the SDL and the service. One change we'll need to make to the generated code is to allow access to anonymous users to view all comments. Change the `@requireAuth` directive to `@skipAuth` instead:
+-->
+
+このコマンドにより、SDL とサービスの両方が作成されます。生成されたコードに加えるべき変更点は、匿名ユーザによるすべてのコメントの閲覧を許可することです。 `@requireAuth` ディレクティブを `@skipAuth` に変更します：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -192,11 +255,19 @@ export const schema = gql`
 </TabItem>
 </Tabs>
 
+<!--
 Now if you take a look back at the real app in the browser (not Storybook) you should see a different message than the GraphQL error we were seeing before:
+-->
+
+ここで、（Storybookではなく）ブラウザで実際のアプリを見返すと、先ほどのGraphQLエラーとは異なるメッセージが表示されるはずです：
 
 ![image](https://user-images.githubusercontent.com/300/101552505-d1405100-3967-11eb-883f-1227689e5f88.png)
 
+<!--
 "Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the `CommentsCell` component to make that "Empty" message a little more friendly:
+-->
+
+"Empty" は、セルが正しくレンダリングされたことを意味します！ただ、まだデータベースにコメントがないだけです。 `CommentsCell` コンポーネントを更新して、この "Empty" メッセージをもう少し親しみやすいものにしましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -223,7 +294,11 @@ export const Empty = () => {
 
 ![image](https://user-images.githubusercontent.com/300/153501827-87b9f931-ee68-4baf-9342-3a70b03d55e2.png)
 
+<!--
 That's better. Let's update the test that covers the Empty component render as well:
+-->
+
+こっちのほうがいいですね。テストも更新してEmptyコンポーネントの描画をカバーしておきましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -252,11 +327,19 @@ it('renders Empty successfully', async () => {
 </TabItem>
 </Tabs>
 
+<!--
 Okay, let's focus on the service for a bit. We'll need to add a function to let users create a new comment and we'll add a test that covers the new functionality.
+-->
+
+さて、少しばかりサービスに焦点を当てましょう。ユーザが新しいコメントを作成できるようにする機能を追加する必要があります。そして、新しい機能をカバーするテストを追加します。
 
 ### Building out the Service
 
+<!--
 By virtue of using the generator we've already got the function we need to select all comments from the database:
+-->
+
+ジェネレータを使うことで、データベースから全てのコメントを取得するために必要な関数をすでに手に入れました：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -309,7 +392,11 @@ export const Comment: CommentRelationResolvers = {
 </TabItem>
 </Tabs>
 
+<!--
 We've also got a function that returns only a single comment, as well as this `Comment` object at the end. That allows us to return nested post data for a comment through GraphQL using syntax like this (don't worry about adding this code to our app, this is just an example):
+-->
+
+また、コメントを1つだけ返す関数と、最後にこの `Comment` オブジェクトを返す関数を追加しています。これにより、以下のような構文で、GraphQLを通じてコメントに対するネストされたブログ記事のデータを返すことができます（このコードをアプリに追加することは心配しないでください。これは単なる例です）。
 
 ```graphql
 query CommentsQuery {
@@ -330,13 +417,25 @@ query CommentsQuery {
 
 :::info
 
+<!--
 Have you noticed that something may be amiss? The `comments()` function returns *all* comments, and all comments only. Could this come back to bite us?
+-->
 
+何か不都合がありそうだとお気づきでしょうか？ `comments()` 関数は *すべての* コメントを、そしてすべてのコメントだけを返します。これは私たちに噛みつくために戻ってくるのでしょうか？
+
+<!--
 Hmmm...
+-->
+
+うーん...
 
 :::
 
+<!--
 We need to be able to create a comment as well. We'll use the same convention that's used in Redwood's generated scaffolds: the create endpoint will accept a single parameter `input` which is an object with the individual model fields:
+-->
+
+コメントも作成できるようにする必要があります。Redwoodの生成したscaffoldで使われているのと同じ規約を使うことにします：createエンドポイントは単一のパラメータ `input` を受け取ります。このパラメータは個々のモデルフィールドを持つオブジェクトです。
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -367,7 +466,11 @@ export const createComment = ({ input }: CreateCommentArgs) => {
 </TabItem>
 </Tabs>
 
+<!--
 We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL and use `@skipAuth` since, again, it can be accessed by everyone:
+-->
+
+また、この関数を GraphQL で公開する必要があるので、SDL にミューテーションを追加して `@skipAuth` を使用することにします。これで誰でもアクセスできるようになります：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -450,13 +553,27 @@ export const schema = gql`
 
 :::tip
 
+<!--
 The `CreateCommentInput` type was already created for us by the SDL generator.
+-->
+
+`CreateCommentInput` 型は、SDL ジェネレータによってすでに作成されています。
 
 :::
 
+<!--
 That's all we need on the api-side to create a comment! But let's think for a moment: is there anything else we need to do with a comment? Let's make the decision that users won't be able to update an existing comment. And we don't need to select individual comments (remember earlier we talked about the possibility of each comment being responsible for its own API request and display, but we decided against it).
+-->
 
+コメントを作成するために必要なAPIサイドの作業はこれだけです！しかし、少し考えてみましょう：コメントに対して他に必要なことはないでしょうか？
+
+ここでは、ユーザが既存のコメントを更新できないようにすることにしましょう。そして、個々のコメントを選択する必要はありません（以前、各コメントがそれ自身のAPIリクエストと表示に責務を担う可能性について検討しましたが、私たちはそれをやめました）。
+
+<!--
 What about deleting a comment? We won't let a user delete their own comment, but as owners of the blog we should be able to delete/moderate them. So we'll need a delete function and API endpoint as well. Let's add those:
+-->
+
+コメントの削除についてはどうですか？ユーザが自分のコメントを削除することはできませんが、ブログのオーナーとして、削除/モデレートはしたいですよね。そこで、削除関数とAPIエンドポイントも必要です。それらを追加しましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -483,7 +600,11 @@ export const deleteComment = ({ id }: Prisma.CommentWhereUniqueInput) => {
 </TabItem>
 </Tabs>
 
+<!--
 Since we only want owners of the blog to be able to delete comments, we'll use `@requireAuth`:
+-->
+
+ブログのオーナーだけがコメントを削除できるようにしたいので、`@requireAuth` を使うことにします：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -510,13 +631,25 @@ type Mutation {
 </TabItem>
 </Tabs>
 
+<!--
 `deleteComment` will be given a single argument, the ID of the comment to delete, and it's required. A common pattern is to return the record that was just deleted in case you wanted to notify the user or some other system about the details of the thing that was just removed, so we'll do that here as well. But, you could just as well return `null`.
+-->
+
+`deleteComment` 渡す引数は1つだけ、削除するコメントのIDで、これは必須の引数です。よくあるパターンは、ユーザや他のシステムに削除されたものの詳細を通知したい場合に備えて削除されたばかりのレコードを返すので、ここでもそうします。しかし、同様に `null` を返すこともできます。
 
 ### Testing the Service
 
+<!--
 Let's make sure our service functionality is working and continues to work as we modify our app.
+-->
 
+サービスの機能要件が満たせていること、そしてアプリを変更しても動作し続けることを確認しましょう。
+
+<!--
 If you open up `api/src/services/comments/comments.test.js` you'll see there's one in there already, making sure that retrieving all comments (the default `comments()` function that was generated along with the service) works:
+-->
+
+`api/src/services/comments/comments.test.js` を開いてみると、すでにテストが1つあり、すべてのコメント（サービスとともに生成されたデフォルトの `comments()` 関数）を取得できることを確認しています。
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -551,23 +684,49 @@ describe('comments', () => {
 </TabItem>
 </Tabs>
 
+<!--
 What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `scenario` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it. You can create the data structure for any and all models defined in `schema.prisma`, not just comments (the file happens to be named that because it's the ones that will load when running `comments.test.js`).
+-->
+
+この `scenario()` 関数とは何でしょうか？これは Redwood が提供するもので、Jest の組み込み関数である `it()` と `test()` のように動作しますが、ひとつだけ重要な違いがあります：それは、 `scenario` 引数で渡されるデータをテストデータベースにあらかじめ登録しておくことです。このデータはデータベース内に存在し、変更した場合にはテスト間でリセットされます。
+コメントだけでなく、 `schema.prisma` で定義されているすべてのモデルに対してデータ構造を作成することができます（このファイルは `comments.test.js` を実行するときにロードされるものなので、たまたまこの名前になっています）。
+
 
 :::info In the section on mocks you said relying on data in the database for testing was dumb?
 
+<!--
 Yes, all things being equal it would be great to not have these tests depend on a piece of software outside of our control.
+-->
 
+そうですね、全て同じなのであれば、私たちがコントロールできないソフトウェアに依存することなくテストができるのは素晴らしいことだと思います。
+
+<!--
 However, the difference here is that in a service almost all of the logic you write will depend on moving data in and out of a database and it's much simpler to just let that code run and *really* access the database, rather than trying to mock and intercept each and every possible call that Prisma could make.
+-->
 
+しかしここでの違いは、サービスでは、あなたが書いたロジックのほとんどすべてがデータベースへのデータの出し入れに依存しているので、Prismaが行う可能性のあるすべての呼び出しをモックして傍受しようとするよりも、コードを実行させて *本当に* データベースにアクセスする方がはるかに単純であるということです。
+
+<!--
 Not to mention that Prisma itself is currently under development and implementations could change at any time. Trying to keep pace with those changes and constantly keep mocks in sync would be a nightmare!
+-->
 
+もちろん、Prisma自体は現在開発中であり、実装がいつでも変更される可能性があることは言うまでもありません。そのような変化に対応し、常にモックを同期させようとするのは悪夢としか言いようがありません！
+
+<!--
 That being said, if you really wanted to you could use Jest's [mocking utilities](https://jestjs.io/docs/en/mock-functions) and completely mock the Prisma interface to abstract the database away completely. But don't say we didn't warn you!
+-->
+
+とはいえ、もし本当にその気になれば、Jestの [mocking utilities](https://jestjs.io/docs/en/mock-functions) を使って、Prismaのインターフェースを完全にモックして、データベースを完全に抽象化することができます。しかし、私たちが警告しなかったとは言わせませんよ！
 
 :::
 
+<!--
 Where does that data come from? Take a look at the `comments.scenarios.{js,ts}` file which is next door:
+-->
 
-<Tabs groupId="js-ts">
+そのデータはどこから来るのでしょうか？隣にある `comments.scenarios.{js,ts}` ファイルを見てください：
+
+<Tabs>
 <TabItem value="js" label="JavaScript">
 
 ```javascript title="api/src/services/comments.scenarios.js"
@@ -620,14 +779,23 @@ export const standard = defineScenario<Prisma.CommentCreateArgs>({
 </TabItem>
 </Tabs>
 
+<!--
 This calls a `defineScenario()` function which checks that your data structure matches what's defined in Prisma. Each scenario data object (for example, `scenario.comment.one`) is passed as-is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). That way you can customize the scenario object using any of Prisma's supported options.
+-->
+
+これは `defineScenario()` 関数を呼び出し、あなたのデータ構造が Prisma で定義されているものと一致しているかどうかをチェックします。それぞれのシナリオデータオブジェクト（例えば `scenario.comment.one` ）は、そのまま Prisma の [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) に渡されます。そうすることで、Prismaがサポートする任意のオプションを使用して、シナリオオブジェクトをカスタマイズすることができます。
 
 :::info The "standard" scenario
 
+<!--
 The exported scenario here is named "standard." Remember when we worked on component tests and mocks, there was a special mock named `standard` which Redwood would use by default if you didn't specify a name? The same rule applies here! When we add a test for `createComment()` we'll see an example of using a different scenario with a unique name.
+-->
+
+ここでエクスポートされるシナリオは "standard" という名前です。コンポーネントのテストとモックを扱ったときに、`standard`という特別なモックがあり、名前を指定しなければRedwoodがデフォルトで使用したことを覚えていますか？これと同じルールがここでも適用されます！`createComment()` のテストを追加したときに、別のシナリオをユニークな名前で使用する例を見てみましょう。
 
 :::
 
+<!--
 The nested structure of a scenario is defined like this:
 
 * **comment**: the name of the model this data is for
@@ -635,16 +803,37 @@ The nested structure of a scenario is defined like this:
     * **data**: contains the actual data that will be put in the database
       * **name, body, post**: fields that correspond to the schema. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
     * **select, include**: optionally, to customize the object to `select` or `include` related fields [using Prisma's syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record)
+-->
 
+シナリオの入れ子構造は、以下のように定義されています：
+
+* **comment**： このデータが対象とするモデル名
+  **one, two**： テストから参照できるシナリオデータに付けられたフレンドリーな名前
+    * **data**： データベースに格納される実際のデータ
+      * **name, body, post**： スキーマに対応するフィールド。この場合、 **Comment** は **Post** に関連する必要があるので、シナリオでは `post` のキーと値を持っている（Prisma の [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes) を使う）
+    * **select, include**： オプションで、関連するフィールドを `select` または `include` するようにオブジェクトをカスタマイズする [using Prisma's syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record)
+
+<!--
 When you receive the `scenario` argument in your test, the `data` key gets unwrapped so that you can reference fields like `scenario.comment.one.name`.
+-->
+
+テストで `scenario` という引数を受け取ると、 `data` キーがアンラップされ、 `scenario.comment.one.name` のようにフィールドを参照できるようになります。
 
 :::info Why does every field just contain the string "String"?
 
+<!--
 When generating the service (and the test and scenarios) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
+-->
+
+サービス（とテストとシナリオ）を生成するときに、私たち（Redwood）がデータについて知っているのは、 `schema.prisma` で定義されている各フィールドの型、すなわち `String`、`Integer` または `DateTime` だけです。そこで、データをデータベースに取り込むために、Prisma が要求する型を満たす最も単純なデータを追加します。このデータは、アプリが期待する実際のデータに近いものに置き換えるなければなりません。実際のところ...
 
 :::
 
+<!--
 Let's replace that scenario data with something more like the real data our app will be expecting:
+-->
+
+このシナリオデータを、アプリが期待する実際のデータにより近いものに置き換えてみましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -723,13 +912,25 @@ export const standard = defineScenario<Prisma.CommentCreateArgs>({
 </TabItem>
 </Tabs>
 
+<!--
 Note that we changed the names of the records from `one` and `two` to the names of the authors, `jane` and `john`. More on that later. Why didn't we include `id` or `createdAt` fields? We told Prisma, in `schema.prisma`, to assign defaults to these fields so they'll be set automatically when the records are created.
+-->
 
+レコードの名前を `one` と `two` から、著者の名前である `jane` と `john` に変更したことに注意してください。これについては後で詳しく説明します。なぜ `id` や `createdAt` フィールドを含めなかったのでしょうか？ `schema.prisma` でPrismaに、これらのフィールドにデフォルトを割り当てるように指示したので、レコードが作成されたときに自動的に設定されます。
+
+<!--
 The test created by the service generator simply checks to make sure the same number of records are returned so changing the content of the data here won't affect the test.
+-->
+
+サービスジェネレータによって作成されたテストは、単に同じ数のレコードが返されることを確認するだけなので、ここでデータの内容を変更してもテストには影響しません。
 
 #### Testing createComment()
 
+<!--
 Let's add our first service test by making sure that `createComment()` actually stores a new comment in the database. When creating a comment we're not as worried about existing data in the database so let's create a new scenario which only contains a post—the post we'll be linking the new comment to through the comment's `postId` field. You can create multiple scenarios and then say which one you want pre-loaded into the database at the time the test is run. We'll let the `standard` scenario stay as-is and make a new one with a new set of data:
+-->
+
+最初のサービステストを追加して、`createComment()` が実際に新しいコメントをデータベースに保存することを確認しましょう。コメントを作成する場合、データベース内の既存のデータについてはあまり気にしないので、ブログ記事だけを含む新しいシナリオを作成しましょう -- ブログ記事は新しいコメントと、コメントの `postId` フィールドを使ってリンクすることになります。複数のシナリオを作成し、テスト実行時にどのシナリオをデータベースにプリロードするかを指定することができます。 `standard` シナリオをそのままにして、新しいデータセットで新しいシナリオを作成します：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -784,7 +985,11 @@ export type PostOnlyScenario = typeof postOnly
 </TabItem>
 </Tabs>
 
+<!--
 Now we can pass the `postOnly` scenario name as the first argument to a new `scenario()` test:
+-->
+
+これで、新しい `scenario()` テストの第一引数として `postOnly` シナリオ名を渡すことができます：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -866,19 +1071,36 @@ describe('comments', () => {
 </TabItem>
 </Tabs>
 
+<!--
 We pass an optional first argument to `scenario()` which is the named scenario to use, instead of the default of "standard."
+-->
 
+デフォルトの "standard" の代わりに使う名前付きシナリオを、オプションの第一引数として `scenario()` に渡します。
+
+<!--
 We were able to use the `id` of the post that we created in our scenario because the scenarios contain the actual database data after being inserted, not just the few fields we defined in the scenario itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
+-->
+
+シナリオで作成したブログ記事の `id` を使うことができました。シナリオには、シナリオ自体で定義したいくつかのフィールドだけでなく、データをinsertした後の実際のデータベースデータも含まれているからです。 `id` に加えて、データベースのデフォルトが `now()` になっている `createdAt` にもアクセスすることができました。
 
 :::info What's that `post: { connect: { id } }` nested structure? Can't we simply pass the Post's ID directly here?
 
+<!--
 What you're looking at is the [connect syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#connect-an-existing-record), which is a Prisma
 core concept. And yes, we could simply pass `postId: scenario.post.bark.id` instead – as a so-called "unchecked" input. But as the name implies, the connect syntax is king
 in Prisma-land.
+-->
+
+ご覧いただいているのは、Prismaのコアコンセプトである [connect syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#connect-an-existing-record) です。そうですね、代わりに、単に `postId: scenario.post.bark.id` を渡せばよいでしょう -- いわゆる "未チェックの" 入力として渡すこともできます。しかし、その名の通り、connect syntaxはPrismaの世界では王様です。
 
 <ShowForTs>
+
+<!--
 Note that if you try to use `postId` that would give you red squiggles, because that input would violate the `CreateCommentArgs` interface definition in
 `api/src/services/comments/comments.ts`. In order to use the `postId` input, that'd need to be changed to
+-->
+
+もし `postId` を使おうとすると、赤い波線が表示されることに注意してください。これは `api/src/services/comments/comments.ts` での `CreateCommentArgs` インターフェースの定義に反するからです。`postId` 入力を使用するには、以下のように変更しなければなりません。
 
 ```ts
 interface CreateCommentArgs {
@@ -893,16 +1115,26 @@ interface CreateCommentArgs {
   input: Prisma.CommentCreateInput | Prisma.CommentUncheckedCreateInput
 }
 ```
+<!--
 in case we wanted to allow both ways – which Prisma generally allows, however [it doesn't allow to pick and mix](https://stackoverflow.com/a/69169106/1246547) within the same input.
+-->
+両方の方法を許可したい場合 -- Prisma は通常許可しますが、しかし同じ入力内での checked と unchecked の混在は許可しません（ [it doesn't allow to pick and mix](https://stackoverflow.com/a/69169106/1246547) ）。
 </ShowForTs>
 
 :::
 
+<!--
 We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the JavaScript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
+-->
+
+`createComment()` 関数に渡したすべてのフィールドが実際にデータベースに作成されたことをテストし、さらに `createdAt` が null でないことを確認します。実際のタイムスタンプが正しいかどうかをテストすることもできますが、それにはJavaScriptのDateオブジェクトをフリーズさせる必要があります。そうすれば、テストにどれだけ時間がかかっても、ミリ秒単位で、まさに *今* である `new Date` と値を比較することができます。可能ではありますが、 [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/) であり、このお手軽で簡単なチュートリアルのスコープ外です。
 
 :::info What's up with the names for scenario data? `posts.bark`? Really?
 
+<!--
 This makes reasoning about your tests much nicer! Which of these would you rather work with:
+-->
+これにより、テストに関する推論がより簡単になります！あなたはどちらでやりたいですか：
 
 **"`claire` paid for an `ebook` using her `visa` credit card."**
 
@@ -910,17 +1142,33 @@ or:
 
 **"`user[3]` paid for `product[0]` using their `cards[2]` credit card?**
 
+<!--
 If you said the second one, remember: you're not writing your code for the computer, you're writing it for other humans! It's the compiler's job to make code understandable to a computer, it's our job to make code understandable to our fellow developers.
+-->
+
+もしあなたが2番目が良いと言ったなら、思い出してください：あなたはコンピュータのためにコードを書いているのではなく、他の人間のためにコードを書いているのです！コンピュータが理解しやすいコードを作るのはコンパイラの仕事であり、仲間の開発者に理解しやすいコードを作るのは私たちの仕事なのです。
 
 :::
 
+<!--
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
+-->
+
+さて、テストが完了したので、私たちのコメントサービスはかなり強固なものになりました。最後のステップは、ユーザが実際にブログ記事にコメントを残せるようにするためのフォームを追加することです。
 
 :::info Mocks vs. Scenarios
 
+<!--
 Mocks are used on the web site and scenarios are used on the api side. It might be helpful to remember that **mock** is a synonym for "fake", as in "this is fake data not really in the database" (so that we can create stories and tests in isolation without the api side getting involved). Whereas a **scenario** is real data in the database, it's just pre-set to some known state that we can rely on.
+-->
 
+モックはWebサイトで、シナリオはapiサイドで使われます。**モック** は "fake" の同義語で、"this is fake data not really in the database" と覚えておくと便利かもしれません（だからこそapiサイドを巻き込まず、単独でストーリーやテストを作成できます）。一方 **シナリオ** は、データベース内の実際のデータで、私たちが信頼できる既知の状態にあらかじめ設定されています。
+
+<!--
 Maybe a [mnemonic](https://www.mnemonicgenerator.com/?words=M%20W%20S%20A) would help?
+-->
+
+[mnemonic](https://www.mnemonicgenerator.com/?words=M%20W%20S%20A) （ニーモニック＝記憶法）を使うとよいのでは？
 
 **M**ocks : **W**eb :: **S**cenarios : **A**PI:
 
@@ -928,6 +1176,10 @@ Maybe a [mnemonic](https://www.mnemonicgenerator.com/?words=M%20W%20S%20A) would
 * Minesweepers Wrecked Subliminal Attorneys
 * Martian Warriors Squeezed Apricots
 
+<!--
 Maybe not...
+-->
+
+コレジャナイ...
 
 :::

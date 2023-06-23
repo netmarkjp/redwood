@@ -1,29 +1,56 @@
 # Building a Component the Redwood Way
 
+<!--
 What's our blog missing? Comments. Let's add a simple comment engine so people can leave
 their completely rational, well-reasoned comments on our blog posts. It's the internet,
 what could go wrong?
+-->
 
+このブログに足りないものは何でしょう？コメントですね。簡単なコメントエンジンを追加して、人々が私たちのブログ記事に完全に合理的で十分なコメントを残せるようにしましょう。インターネットですからね。何か問題ありますか？
+
+<!--
 There are two main features we need to build:
 
 1. Comment form and creation
 2. Comment retrieval and display
+-->
 
+私たちが構築しなければならない機能は、大きく2つあります：
+
+1. コメントフォームと作成
+2. コメントの取得と表示
+
+<!--
 Which order we build them in is up to us. To ease into things, let's start with the fetching and displaying comments first and then we'll move on to more complex work of adding a form and service to create a new comment. Of course, this is Redwood, so even forms and services aren't *that* complex!
+-->
+
+どの順番で構築するかは、私たち次第です。簡単にするために、まずコメントの取得と表示から始めて、それからより複雑な新しいコメントを作成するためのフォームとサービスを追加する作業に移りましょう。もちろんRedwoodですから、フォームやサービスだって *それほど* 複雑ではありません！
 
 ### Storybook
 
+<!--
 Let's create a component for the display of a single comment. First up, the generator:
+-->
+
+それでは1つのコメントを表示するコンポーネントを作りましょう。まずはジェネレータです：
 
 ```bash
 yarn rw g component Comment
 ```
 
+<!--
 Storybook should refresh and our "Generated" Comment story will be ready to go:
+-->
+
+Storybook が更新され、 "生成された" コメントのストーリーが準備されるはずです：
 
 ![image](https://user-images.githubusercontent.com/300/153475744-2e3151f9-b39c-4823-b2ef-539513cd4005.png)
 
+<!--
 Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the **Comment** component to accept a `comment` object with those three properties:
+-->
+
+ユーザに何を要求するか、コメントで表示させたい内容を考えてみましょう。名前とコメントそのものの内容だけではどうでしょうか？あと、そのコメントが作成された日付/時刻を投げ込みます。 **Comment** コンポーネントを更新して、 `comment` オブジェクトが3つのプロパティを受け付けるようにしましょう。
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -79,11 +106,19 @@ export default Comment
 </TabItem>
 </Tabs>
 
+<!--
 Once you save that file and Storybook reloads you'll see it blow up:
+-->
+
+そのファイルを保存してStorybookをリロードすると、ぶっ壊れます：
 
 ![image](https://user-images.githubusercontent.com/300/153475904-8f53cb09-3798-4e5a-9b6a-1ff1df98f93f.png)
 
+<!--
 We need to update the story to include that comment object and pass it as a prop:
+-->
+
+このコメントオブジェクトを取り込んで props として渡すよう、ストーリーを更新しなければなりません：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -142,15 +177,27 @@ export default {
 
 :::info
 
+<!--
 Datetimes will come from GraphQL in [ISO8601 format](https://en.wikipedia.org/wiki/ISO_8601#Times) so we need to return one in that format here.
+-->
+
+GraphQLから送られてくる日付は [ISO8601形式](https://en.wikipedia.org/wiki/ISO_8601#Times) なので、ここでも同じフォーマットにしなければなりません。
 
 :::
 
+<!--
 Storybook will reload and be much happier:
+-->
+
+Storybook は再読み込みしてよりhappyになるでしょう：
 
 ![image](https://user-images.githubusercontent.com/300/153476049-8ac31858-3014-47b5-807c-02b32d5a3ab0.png)
 
+<!--
 Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element:
+-->
+
+この **Comment** コンポーネントに、少しスタイリングと日付変換を足して、素敵な完成されたデザイン要素にしましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -228,15 +275,31 @@ export default Comment
 
 ![image](https://user-images.githubusercontent.com/300/153476305-017c6cf8-a2dd-4da0-a6ef-487d91a562df.png)
 
+<!--
 Our component looks great! Now let's verify that it does what we want it to do with a test.
+-->
+
+いい感じ！では、このコンポーネントが私たちの望むとおりに動くかどうか、テストしてみましょう。
 
 ### Testing
 
+<!--
 We don't want Santa to skip our house so let's test our **Comment** component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
+-->
 
+サンタさんが来ないと困るので、きちんと **Comment** コンポーネントをテストしましょう。作者の名前とコメントの本文が表示されるか、投稿された日付が表示されるかをテストできます。
+
+<!--
 The default test that comes with a generated component just makes sure that no errors are thrown, which is the least we could ask of our components!
+-->
 
+生成されたコンポーネントに付属するデフォルトのテストは、エラーが投げられないことを確認するだけで、これは私たちがコンポーネントに求める最低限のことです！
+
+<!--
 Let's add a sample comment to the test and check that the various parts are being rendered:
+-->
+
+テストにサンプルコメントを追加して、各部が描画されることを確認してみましょう：
 
 <Tabs groupId="js-ts">
 <TabItem value="js" label="JavaScript">
@@ -301,9 +364,17 @@ describe('Comment', () => {
 </TabItem>
 </Tabs>
 
+<!--
 Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for an article's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preserve that ability.
+-->
 
+ここでは、出力される `createdAt` タイムスタンプの両方の要素についてテストしています：出力される実際のテキスト（記事の本文を切り詰めるテストと同様）だけでなく、そのテキストをラップしている要素が `<time>` タグであり、 `comment.createdAt` という生の値を持つ `datetime` 属性を含んでいるかどうかです。これはやりすぎのように思えるかもしれませんが、 `datetime` 属性のポイントは、ブラウザが（理論的には）フックして何かできるような、機械的に読み取れるタイムスタンプを提供することなのです。このテストでその能力を維持していることを確認します。
+
+<!--
 If your tests aren't already running in another terminal window, you can start them now:
+-->
+
+もしテストがまだ別のターミナルウィンドウで実行されていないなら、今すぐ開始できます：
 
 ```bash
 yarn rw test
@@ -311,6 +382,12 @@ yarn rw test
 
 :::info What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?
 
+<!--
 Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the `Comment` component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with `Comment`.
+-->
+
+そうです。ちょうど、切り詰める長さを変更したら切り詰めテキストを変更しなければならないのと同じです。フォーマットされた出力をテストするための別のアプローチとして、日付フォーマットの形式を `Comment` コンポーネントからエクスポートできる関数に移動させることができます。
+そして、それをテストにインポートして、フォーマットされた出力をチェックするために使うことができます。
+これで形式を変更しても、 `Comment` と関数を共有しているため、テストはパス（成功）し続けることができます。
 
 :::

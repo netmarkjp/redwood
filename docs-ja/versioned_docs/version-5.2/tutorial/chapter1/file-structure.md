@@ -1,10 +1,18 @@
 # Redwood File Structure
 
+<!--
 Let's take a look at the files and directories that were created for us (config files have been excluded for now):
+-->
+
+作成されたファイルとディレクトリを見てみましょう（ここでは設定ファイルを除外しています）。
 
 :::info
 
+<!--
 Don't worry about trying to memorize this directory structure right now, it's just a brief overview to get you oriented. Seeing dozens of files before you've even written a single line of code can be daunting, but there's a great organizational structure here, promise. You can also ignore this all for now and we'll touch upon many of these files and directories as we go.
+-->
+
+今すぐにこのディレクトリ構造を覚えようとしなくても大丈夫です。これはあなたが方向性を掴むための簡単な概要に過ぎません。一行もコードを書いていない段階で何十ものファイルを見るのは気が重くなりますが、ここには素晴らしい組織的な構造があります。約束します。今のところ、これらをすべて無視しても構いません。
 
 :::
 
@@ -99,19 +107,33 @@ Don't worry about trying to memorize this directory structure right now, it's ju
 </TabItem>
 </Tabs>
 
+<!--
 At the top level we have three directories, `api`, `scripts` and `web`. Redwood separates the backend (`api`) and frontend (`web`) concerns into their own paths in the codebase. ([Yarn refers to these as "workspaces"](https://yarnpkg.com/features/workspaces). In Redwood, we refer to them as "sides.") When you add packages going forward you'll need to specify which workspace they should go in. For example (**don't run these commands**, we're just looking at the syntax):
+-->
+
+トップレベルには `api` 、 `scripts` 、 `web` という3つのディレクトリがあります。Redwood はバックエンド （ `api` ） とフロントエンド（ `web` ）をコードベース内のそれぞれのパスに分離しています（[Yarn はこれらを "workspaces" と呼んでいます](https://yarnpkg.com/features/workspaces) 。Redwoodでは、これらを "サイド "と呼んでいます）。今後パッケージを追加する際には、どのワークスペースに入れるかを指定しなければなりません。たとえば、次のように（**これらのコマンドは実行しないでください。**構文を見ているだけです）：
 
 ```bash
 yarn workspace web add marked
 yarn workspace api add better-fs
 ```
 
+<!--
 `scripts` is meant to hold any Node scripts you may need to run from the command line that aren't directly related to the api or web sides. The file that's in there, `seed.{js,ts}` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
+-->
+
+`scripts` には、コマンドラインから実行する必要がある、APIサイドやWebサイドに直接関係しないNodeスクリプトを格納します。
+この中にある `seed.{js,ts}` というファイルは、アプリを実行するために必要なデータ（管理者ユーザやサイト設定など）をデータベースに登録するために使用されます。
 
 ### The /api Directory
 
+<!--
 Within `api` there are four directories:
+-->
 
+`api` の中には4つのディレクトリがあります：
+
+<!--
 - `db` contains the plumbing for the database:
   - `schema.prisma` contains the database schema (tables and columns)
 
@@ -129,9 +151,30 @@ Within `api` there are four directories:
 - And finally `types` contains automatically compiled GraphQL types and can be ignored during development
 
 That's it for the backend.
+-->
+
+
+- `db` には、データベースのplumbingが格納される（plumbing＝配管、コンポーネント間結合などの意味）：
+  - `schema.prisma` にはデータベースのスキーマ（テーブルとカラム）が格納される
+
+  最初のテーブルを追加した後は `dev.db` という名前の SQLite データベースファイルと `migrations` という名前のディレクトリが作成されます。 `migrations` には、時間の経過とともに変化するデータベーススキーマのスナップショットとして動作するファイルが格納されます。
+
+- `dist` にはapiサイドでコンパイルされたコードが格納される。開発中は無視することができる
+
+- `src` には、バックエンドのすべてのコードが格納される。`api/src` にはさらに5つのディレクトリが格納される
+  - `directives` には、クエリへのアクセスや値の変換を制御するための GraphQL [schema directives](https://www.graphql-tools.com/docs/schema-directives) が格納される
+  - `functions` には、Redwood が自動生成する `graphql.{js,ts}` ファイルに加えて、アプリに必要な [lambda functions](https://docs.netlify.com/functions/overview/) が格納される。このファイルは、GraphQL APIを使用するために必要
+  - `graphql` にはスキーマ定義言語（Schema Definition Language）で記述された GraphQL スキーマが格納される（ファイル名の末尾は `.sdl.{js,ts}` ）
+  - `lib` には、いくつかのファイルが格納される。 `auth.{js,ts}` は認証機能を追加するためのプレースホルダとして始まり、そのためのいくつかの基本的な関数を持っている。 `db.{js,ts}` はデータベースと通信するためのPrismaデータベースクライアントをインスタンス化し、 `logger.{js,ts}` はロギングをいい感じに設定する。この `api/src/lib` ディレクトリは、他の場所に属さないAPIサイドのコードに使用することができる
+  - `services` には、データに関連するビジネスロジックが格納される。GraphQLのデータに対してクエリやミューテーションを行う場合（ **resolvers** （リゾルバ）として知られている）、そのコードはここで完結するが、アプリケーションの他の場所で再利用できる形式になっている
+
+- そして最後に `types` には自動的にコンパイルされたGraphQLの型が格納される。開発中は無視することができる
+
+バックエンドは以上です。
 
 ### The /web Directory
 
+<!--
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
@@ -149,3 +192,22 @@ That's it for the backend.
   - `Routes.{js,tsx}` the route definitions for our app which map a URL to a _Page_.
 
 We'll dip in and out of these directories and files (and create some new ones) as we work through the tutorial.
+-->
+
+- `public` には、Reactコンポーネントで使用されないアセットが格納される（最終的なアプリのルートディレクトリにそのままコピーされる）
+  - `favicon.png` は、ページを開いたときにブラウザのタブに表示されるアイコン（最初はRedwoodJSのロゴ）
+  - `README.md` では、静的アセットに `public` フォルダを使用する方法とそのタイミングを説明している。またWebpackを使用してコンポーネント内にアセットをインポートする際のベストプラクティスについても説明している。[このREADME.mdファイルはGitHubで読むことができる](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public)
+  - `robots.txt` は、ウェブインデクサーに対する[許可を制御する](https://www.robotstxt.org/robotstxt.html)ために使用する
+
+- `src` にはいくつかのサブディレクトリが格納される
+  - `components` には、従来の React コンポーネントと、 Redwoodの _Cells_ （セル）が格納される（詳細は後述）
+  - `layouts` には、コンテンツをラップして _Pages_ （ページ）をまたいで共有されるHTMLやコンポーネントが格納される
+  - `pages` にはコンポーネントが格納される。これはオプションで _Layouts_ の内側にラップされ、与えられたURLの "ランディングページ" になる（URLの `/articles/hello-world` はあるページに、 `/contact-us` はまた別のページにマッピングされる）。新しいアプリには2つのページが含まれている：
+    - `NotFoundPage.{js,tsx}` は、他のルートが見つからない場合に配信される（下記 `Routes.{js,tsx}` 参照）
+    - `FatalErrorPage.{js,tsx}` は、リカバリ不能エラーがキャッチされず、アプリケーションが本当にもうどうしようもなくなった場合にレンダリングされる（通常は空白ページ）
+  - `App.{js,tsx}` は、Redwoodアプリを起動して実行するためのブートストラップコード
+  - `index.css` はカスタムCSSを記述するのに適した場所ですが、多くのオプションがある（私たちは [TailwindCSS](https://tailwindcss.com/) 推しです。信じられないかもしれませんが、アプリをやっていく上でカスタムCSSを記述する必要はないかもしれません！）
+  - `index.html` は、標準的なReactの出発点
+  - `Routes.{js,tsx}` は、URL を _Page_ にマップするアプリのルート定義
+
+チュートリアルを進めていく中で、これらのディレクトリやファイルに出入りすることになります（新しいのもいくつか作成します）。
