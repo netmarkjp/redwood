@@ -5,11 +5,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#b85833",
-    "statusBarItem.hoverBackground": "#ce7350",
-    "statusBar.foreground": "#e7e7e7"
-  },
   "search.exclude": {
     "**/dist": true,
     "**/node_modules": true,
